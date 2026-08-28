@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Holiday Parties at Harbor Lights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<meta name="ext-resource-dependency" content="assets/social-menus.pdf" data-resource-id="pdf-social" />
+<meta name="ext-resource-dependency" content="assets/corporate-menus.pdf" data-resource-id="pdf-corporate" />
+<meta name="ext-resource-dependency" content="assets/group-catering.pdf" data-resource-id="pdf-group" />
+<meta name="ext-resource-dependency" content="assets/holiday-catering-packages.pdf" data-resource-id="pdf-packages" />
+<style>
+  html,body{margin:0;padding:0;background:#F7F2E9;}
+  body{font-family:'Libre Franklin',sans-serif;color:#1F2A36;-webkit-font-smoothing:antialiased;}
+  a{color:#8C6A2F;text-decoration:none;}
+  a:hover{color:#14324E;text-decoration:underline;}
+  *{box-sizing:border-box;}
+  input,select,textarea{font-family:'Libre Franklin',sans-serif;}
+</style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#14324E"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#14324E"></rect><text x="100" y="96" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#C2A15C">HL</text><text x="100" y="132" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#F7F2E9">Holiday Parties</text></svg></template>
+
+<!-- NAV — harborlightsri.com sticky header: blue bar, logo left, white nav text w/ dropdowns; hamburger under 1200px -->
+<div style="background:#14324E;padding:0 clamp(16px,3vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;height:96px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.25)">
+  <a href="https://harborlightsri.com/" style="display:block;flex-shrink:0;height:64px;width:190px;text-decoration:none">
+    <image-slot id="site-logo" shape="rect" fit="contain" placeholder="Drop Harbor Lights logo" style="width:100%;height:100%"></image-slot>
+  </a>
+  <sc-if value="{{ isMobileNav }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;align-items:center;gap:14px">
+    <a href="tel:4017376353" style="color:#C2A15C;font-weight:700;font-size:14px;white-space:nowrap">(401) 737-6353</a>
+    <a href="#inquire" style="background:#C2A15C;color:#14324E;padding:10px 16px;border-radius:2px;font-weight:700;font-size:12px;letter-spacing:.04em;white-space:nowrap;text-transform:uppercase">Inquire</a>
+    <button onClick="{{ toggleMobileNav }}" aria-label="Toggle Navigation" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px;color:#FFFFFF;font-size:13px;letter-spacing:.06em">
+      <span style="display:flex;flex-direction:column;gap:5px"><span style="display:block;width:24px;height:2px;background:#FFFFFF"></span><span style="display:block;width:24px;height:2px;background:#FFFFFF"></span><span style="display:block;width:24px;height:2px;background:#FFFFFF"></span></span>
+      Toggle Navigation
+    </button>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isDesktopNav }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;align-items:center;gap:clamp(12px,1.5vw,26px);font-size:clamp(12px,1.1vw,14px);color:#FFFFFF;font-weight:500">
+    <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+      <div style="position:relative" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}">
+        <a href="{{ item.href }}" style="color:#FFFFFF;display:flex;align-items:center;gap:5px;padding:38px 0;white-space:nowrap" style-hover="color:#C2A15C">{{ item.label }}<sc-if value="{{ item.hasChildren }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;color:rgba(255,255,255,.6)">▼</span></sc-if></a>
+        <sc-if value="{{ item.open }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:100%;left:-18px;background:#14324E;box-shadow:0 6px 18px rgba(0,0,0,.35);min-width:240px;display:flex;flex-direction:column;padding:6px 0">
+            <sc-for list="{{ item.children }}" as="child" hint-placeholder-count="2">
+              <a href="{{ child.href }}" style="color:#FFFFFF;padding:12px 18px;font-size:13.5px;white-space:nowrap" style-hover="background:#1d4368;color:#C2A15C">{{ child.label }}</a>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <a href="tel:4017376353" style="color:#C2A15C;font-weight:700;font-size:clamp(12px,1.15vw,14.5px);white-space:nowrap;flex-shrink:0" style-hover="color:#FFFFFF">(401) 737-6353</a>
+    <a href="#inquire" style="background:#C2A15C;color:#14324E;padding:12px clamp(12px,1.6vw,22px);border-radius:2px;font-weight:700;font-size:clamp(11.5px,1.05vw,13px);letter-spacing:.04em;white-space:nowrap;flex-shrink:0;text-transform:uppercase" style-hover="background:#d4b571;color:#14324E">Inquiries</a>
+  </div>
+  </sc-if>
+</div>
+<sc-if value="{{ mobileNavOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:sticky;top:96px;z-index:49;background:#14324E;box-shadow:0 10px 24px rgba(0,0,0,.35);display:flex;flex-direction:column;padding:8px 0;max-height:70vh;overflow-y:auto">
+    <sc-for list="{{ mobileNavLinks }}" as="link" hint-placeholder-count="10">
+      <a href="{{ link.href }}" style="color:#FFFFFF;padding:13px 0 13px {{ link.indent }};font-size:15px" style-hover="background:#1d4368;color:#C2A15C">{{ link.label }}</a>
+    </sc-for>
+  </div>
+</sc-if>
+
+<!-- HERO -->
+<div style="position:relative;height:640px;background:#14324E">
+  <image-slot id="hero" shape="rect" src="assets/img/hero.jpg" placeholder="Drop hero photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,35,56,.55) 0%,rgba(12,35,56,.25) 45%,rgba(12,35,56,.72) 88%,rgba(12,35,56,.72) 94%,rgba(12,35,56,.15) 100%);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;pointer-events:none">
+    <div style="font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#C2A15C;margin-bottom:18px">Holiday Parties 2026</div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:600;color:#F7F2E9;margin:0 0 16px;max-width:820px;line-height:1.08;text-wrap:balance">Celebrate the Season on the Water</h1>
+    <div style="display:flex;gap:14px;pointer-events:auto;margin-bottom:26px">
+      <a href="#inquire" style="background:#C2A15C;color:#14324E;padding:15px 32px;border-radius:2px;font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase">Plan Your Party</a>
+      <a href="#catering" style="border:1px solid rgba(247,242,233,.6);color:#F7F2E9;padding:15px 32px;border-radius:2px;font-weight:500;font-size:14px;letter-spacing:.06em;text-transform:uppercase">Holiday Catering</a>
+    </div>
+    <sc-if value="{{ showIncentive }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(194,161,92,.55);padding:10px 20px;color:#F7F2E9;font-size:14px"><span style="color:#C2A15C">✦</span>Book by September 15 for priority dates &amp; early-booking perks</div>
+      <div style="color:#F7F2E9;font-size:15px;pointer-events:auto">Questions? Call <a href="tel:4017376353" style="color:#C2A15C;font-weight:700;font-size:17px">(401) 737-6353</a></div>
+    </div></sc-if>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div style="max-width:760px;margin:0 auto;padding:88px 24px 72px;text-align:center">
+  <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8C6A2F;margin-bottom:16px">The Setting</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin:0 0 20px;color:#14324E;text-wrap:balance">One venue, every kind of holiday gathering</h2>
+  <p style="font-size:17px;line-height:1.75;color:#4A5866;margin:0">Overlooking Greenwich Bay, Harbor Lights hosts holiday luncheons, plated and buffet dinners, and cocktail-style parties for groups large and small. Our sales team works with every client on menus, minimums, and room options — so your celebration fits your group and your budget.</p>
+</div>
+
+<!-- WAYS TO CELEBRATE -->
+<div id="celebrate" style="background:#FFFDF8;border-top:1px solid #E8DFCE;border-bottom:1px solid #E8DFCE;padding:80px 48px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:56px">
+      <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8C6A2F;margin-bottom:14px">Private Holiday Parties</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin:0;color:#14324E">Ways to Celebrate</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-lunch" shape="rect" src="assets/img/lunch.jpg" placeholder="Drop luncheon photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Holiday Luncheons</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">A festive midday celebration — plated or buffet luncheon menus with waterfront views, ideal for teams celebrating on the clock.</p>
+          <a href="{{ socialPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Luncheon Menus (PDF) ↓</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-dinner" shape="rect" src="assets/img/dinner.jpg" placeholder="Drop plated dinner photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Plated &amp; Buffet Dinners</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">An elegant evening with a full sit-down or buffet dinner from our social and corporate menus, tailored to your group.</p>
+          <a href="{{ corporatePdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Dinner Menus (PDF) ↓</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-cocktail" shape="rect" src="assets/img/cocktail.jpg" placeholder="Drop cocktail party photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Cocktail Parties</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">Keep it social — passed hors d'oeuvres and stationary displays that let your guests mix, mingle, and toast the season.</p>
+          <a href="{{ socialPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Hors d'Oeuvres Menu (PDF) ↓</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-family" shape="rect" src="assets/img/family-kids.jpg" placeholder="Drop family party photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Family Parties</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">Gather every generation for a festive celebration — menus and spaces that welcome kids, grandparents, and everyone in between.</p>
+          <a href="{{ socialPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Social Menus (PDF) ↓</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-brunch" shape="rect" src="assets/img/brunch.jpg" placeholder="Drop brunch photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Brunch Get-Togethers</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">A relaxed morning celebration with brunch buffets, sparkling toasts, and winter waterfront views.</p>
+          <a href="{{ socialPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Brunch Menus (PDF) ↓</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#F7F2E9;border:1px solid #E8DFCE;min-width:0">
+        <div style="height:220px">
+          <image-slot id="way-reception" shape="rect" src="assets/img/reception.jpg" placeholder="Drop reception photo" style="width:100%;height:100%"></image-slot>
+        </div>
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Company Receptions</h3>
+          <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">Thank your team or entertain clients with an elegant evening reception — plated, buffet, or cocktail style.</p>
+          <a href="{{ corporatePdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">Corporate Menus (PDF) ↓</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div style="background:#14324E;color:#F7F2E9;padding:72px 48px;text-align:center">
+  <div style="max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px">
+    <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#C2A15C">Dates Are Filling Fast</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin:0;text-wrap:balance">Reserve your holiday date on the water</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:rgba(247,242,233,.85);margin:0">Tell us about your group and a Sales Manager will build a proposal around your date, menu, and budget.</p>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+      <a href="#inquire" style="background:#C2A15C;color:#14324E;padding:16px 36px;border-radius:2px;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase" style-hover="background:#d4b571;color:#14324E">Start Your Inquiry</a>
+      <span style="font-size:15px;color:rgba(247,242,233,.85)">or call <a href="tel:4017376353" style="color:#C2A15C;font-weight:700;font-size:17px">(401) 737-6353</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- CATERING / OFFSITE -->
+<div id="catering" style="background:#FFFDF8;border-bottom:1px solid #E8DFCE;padding:80px 48px">
+  <div style="max-width:1080px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:52px">
+      <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8C6A2F;margin-bottom:14px">Hosting Offsite?</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin:0 0 14px;color:#14324E">We'll bring the party to you</h2>
+      <p style="font-size:16px;line-height:1.7;color:#4A5866;max-width:640px;margin:0 auto">Celebrating at the office or at home? Harbor Lights caters holiday gatherings anywhere — fully customizable menus and pricing built around your group.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px">
+      <div style="background:#F7F2E9;border:1px solid #E8DFCE;padding:36px;display:flex;flex-direction:column;gap:14px">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Group Catering</h3>
+        <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">Our Group Catering menu is a starting point — we'll work with you on a menu and pricing that fits your team, from drop-off platters to full-service events.</p>
+        <a href="{{ groupCateringPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">View Group Catering Menu (PDF) ↓</a>
+      </div>
+      <div style="background:#F7F2E9;border:1px solid #E8DFCE;padding:36px;display:flex;flex-direction:column;gap:14px">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:0;color:#14324E">Holiday Catering Packages</h3>
+        <p style="font-size:15px;line-height:1.65;color:#4A5866;margin:0;flex:1">Seasonal packages designed for easy holiday ordering — pick a package, place your order online, and we handle the rest. 2026 packages coming soon.</p>
+        <a href="{{ packagesPdf }}" target="_blank" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8C6A2F">View Holiday Catering Packages (PDF) ↓</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div style="padding:72px 48px;background:#F7F2E9">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8C6A2F;margin-bottom:12px">The View</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;margin:0;color:#14324E">On the waterfront</h2>
+    </div>
+    <div style="position:relative">
+      <div ref="{{ galleryRef }}" style="display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px">
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-1" shape="rect" src="assets/img/gal1.jpg" placeholder="Waterfront ballroom" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-2" shape="rect" src="assets/img/gal2.jpg" placeholder="Gala ballroom" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-3" shape="rect" src="assets/img/gal3.jpg" placeholder="Sunset table" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-4" shape="rect" src="assets/img/gal4.jpg" placeholder="Sparkling wine" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-5" shape="rect" src="assets/img/gal5.jpg" placeholder="Cozy party" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-6" shape="rect" src="assets/img/gal6.jpg" placeholder="Dinner table" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-7" shape="rect" src="assets/img/gal7.jpg" placeholder="Holiday buffet" style="width:100%;height:100%"></image-slot></div>
+        <div style="flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start;height:280px"><image-slot id="gal-8" shape="rect" src="assets/img/gal8.jpg" placeholder="Brunch table" style="width:100%;height:100%"></image-slot></div>
+      </div>
+      <button onClick="{{ galleryPrev }}" aria-label="Previous photos" style="position:absolute;left:-22px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #D8CDB6;background:#FFFFFF;color:#14324E;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(20,50,78,.18);display:flex;align-items:center;justify-content:center">←</button>
+      <button onClick="{{ galleryNext }}" aria-label="Next photos" style="position:absolute;right:-22px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #D8CDB6;background:#FFFFFF;color:#14324E;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(20,50,78,.18);display:flex;align-items:center;justify-content:center">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="faq" style="background:#FFFDF8;border-top:1px solid #E8DFCE;padding:80px 48px">
+  <div style="max-width:760px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:44px">
+      <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8C6A2F;margin-bottom:12px">Good to Know</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;margin:0;color:#14324E">Frequently asked questions</h2>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
+        <div style="border-bottom:1px solid #E8DFCE">
+          <button onClick="{{ faq.toggle }}" style="width:100%;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 4px;text-align:left;font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:#14324E">
+            {{ faq.q }}
+            <span style="color:#8C6A2F;font-family:'Libre Franklin',sans-serif;font-size:18px;font-weight:400">{{ faq.icon }}</span>
+          </button>
+          <sc-if value="{{ faq.open }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:15px;line-height:1.7;color:#4A5866;margin:0;padding:0 4px 22px">{{ faq.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+
+<!-- INQUIRY FORM -->
+<div id="inquire" style="background:#14324E;padding:88px 48px 96px">
+  <div style="max-width:680px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:44px">
+      <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#C2A15C;margin-bottom:14px">Let's Plan It</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;margin:0 0 14px;color:#F7F2E9">Start Your Holiday Inquiry</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:rgba(247,242,233,.78);margin:0">Tell us about your group and a Sales Manager will follow up within one business day.</p>
+    </div>
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FFFDF8;padding:56px 40px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:#14324E;margin-bottom:12px">Thank you!</div>
+        <p style="font-size:15.5px;line-height:1.65;color:#4A5866;margin:0">Your inquiry is on its way. A Harbor Lights Sales Manager will be in touch within one business day.</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#FFFDF8;padding:44px 40px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px">
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">First &amp; Last Name *
+            <input type="text" placeholder="Jane Smith" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Company or Group *
+            <input type="text" placeholder="Acme Co." style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Email *
+            <input type="email" placeholder="jane@company.com" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Phone *
+            <input type="tel" placeholder="(401) 555-0123" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+          </label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Type of Event *
+          <select value="{{ eventType }}" onChange="{{ setEventType }}" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36">
+            <option value="">Select one…</option>
+            <option value="private">Private Holiday Party</option>
+            <option value="jingle">Holiday Jingle Mingle, December 11, 2026 — Perfect for groups of 40 &amp; under!</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Approximate Guest Count *
+          <input type="number" placeholder="75" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+        </label>
+        <sc-if value="{{ isPrivate }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:22px;border-top:1px solid #E8DFCE;padding-top:22px">
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Preferred Event Date
+              <input type="date" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36"></input>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Is your date flexible?</div>
+              <div style="display:flex;gap:24px;font-size:14.5px;color:#1F2A36">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="flex" style="accent-color:#14324E"></input>Yes, my date is flexible</label>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="flex" style="accent-color:#14324E"></input>No, my date is firm</label>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Preferred Time of Day</div>
+              <div style="display:flex;gap:24px;font-size:14.5px;color:#1F2A36">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="tod" style="accent-color:#14324E"></input>Daytime</label>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="tod" style="accent-color:#14324E"></input>Evening</label>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="tod" style="accent-color:#14324E"></input>Flexible</label>
+              </div>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">Style of event you are envisioning
+              <textarea rows="3" placeholder="e.g. Plated dinner with cocktail hour, casual buffet luncheon, cocktail-style party with passed hors d'oeuvres…" style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36;resize:vertical"></textarea>
+            </label>
+          </div>
+        </sc-if>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:#14324E">How did you hear about us?
+          <select style="border:1px solid #D8CDB6;background:#fff;padding:12px 14px;font-size:15px;border-radius:2px;color:#1F2A36">
+            <option value="">Select one…</option>
+            <option>Search engine</option>
+            <option>Social media</option>
+            <option>Attended an event here</option>
+            <option>Referral / word of mouth</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <button onClick="{{ submit }}" style="background:#14324E;color:#F7F2E9;border:none;cursor:pointer;padding:16px;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;margin-top:6px" style-hover="background:#1d4368">Submit Inquiry</button>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+<!-- FOOTER — mirrors harborlightsri.com -->
+<div style="background:#14324E;color:#FFFFFF;padding:64px 48px 48px">
+  <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:48px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:14px;letter-spacing:.18em;font-weight:700;color:#FFFFFF">CONTACT</div>
+      <div style="font-size:14.5px;line-height:1.7;color:rgba(255,255,255,.85)">
+        <div style="font-weight:600;color:#FFFFFF">Harbor Lights</div>
+        <div>150 Gray St<br />Warwick, RI 02889</div>
+      </div>
+      <div style="font-size:14.5px;line-height:1.7;color:rgba(255,255,255,.85)">
+        <div style="font-weight:600;color:#FFFFFF">Harbor Lights Marina</div>
+        <div>200 Gray St<br />Warwick, RI 02889</div>
+      </div>
+      <div style="font-size:14.5px;line-height:1.8">
+        <a href="tel:4017376353" style="color:#FFFFFF">(401) 737-6353</a><br />
+        <a href="mailto:info@harborlightsri.com" style="color:#FFFFFF">info@harborlightsri.com</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:14px;letter-spacing:.18em;font-weight:700;color:#FFFFFF">QUICK LINKS</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px">
+        <a href="https://harborlightsri.com/weddings/" style="color:rgba(255,255,255,.85)" style-hover="color:#C2A15C">Weddings</a>
+        <a href="https://harborlightsri.com/special-events/" style="color:rgba(255,255,255,.85)" style-hover="color:#C2A15C">Special Events</a>
+        <a href="https://harborlightsri.com/corporate/" style="color:rgba(255,255,255,.85)" style-hover="color:#C2A15C">Corporate Events</a>
+        <a href="https://harborlightsri.com/dining/" style="color:rgba(255,255,255,.85)" style-hover="color:#C2A15C">Restaurant &amp; Live Events</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+      <div style="font-size:14px;letter-spacing:.18em;font-weight:700;color:#FFFFFF">STAY IN TOUCH</div>
+      <a href="https://harborlightsri.com/" style="border:1px solid #C2A15C;color:#C2A15C;padding:13px 26px;border-radius:2px;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase" style-hover="background:#C2A15C;color:#14324E">Join Our Newsletter</a>
+    </div>
+  </div>
+  <div style="max-width:1180px;margin:44px auto 0;border-top:1px solid rgba(255,255,255,.18);padding-top:22px;text-align:center;font-size:13px;color:rgba(255,255,255,.6)">Ⓒ 2026 Flying Bridge Marina, All Rights Reserved</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showIncentive&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { eventType: "", submitted: false, openFaq: 0, openNav: -1, vw: 1440, mobileNavOpen: false };
+  componentDidMount() {
+    this._onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener("resize", this._onResize);
+    this._onResize();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); }
+  _res(id, url) { return (window.__resources && window.__resources[id]) || url; }
+  renderVals() {
+    const s = this.state;
+    const res = this._res;
+    return {
+      socialPdf: res("pdf-social", "assets/social-menus.pdf"),
+      corporatePdf: res("pdf-corporate", "assets/corporate-menus.pdf"),
+      groupCateringPdf: res("pdf-group", "assets/group-catering.pdf"),
+      packagesPdf: res("pdf-packages", "assets/holiday-catering-packages.pdf"),
+      eventType: s.eventType,
+      setEventType: (e) => this.setState({ eventType: e.target.value }),
+      isPrivate: s.eventType === "private",
+      submitted: s.submitted,
+      notSubmitted: !s.submitted,
+      submit: () => this.setState({ submitted: true }),
+      navItems: this._navData().map((item, i) => ({
+        ...item,
+        hasChildren: !!item.children,
+        children: item.children || [],
+        open: !!item.children && s.openNav === i,
+        enter: () => this.setState({ openNav: i }),
+        leave: () => this.setState({ openNav: -1 }),
+      })),
+      ...this._extraVals(),
+    };
+  }
+  _navData() {
+    return [
+        { label: "Calendar", href: "https://harborlightsri.com/calendar-of-events/" },
+        { label: "Weddings", href: "https://harborlightsri.com/weddings/" },
+        { label: "Holiday Events", href: "#" },
+        { label: "Dining", href: "https://harborlightsri.com/dining/" },
+        { label: "Golf", href: "https://harborlightsri.com/golf/" },
+        { label: "Pool", href: "https://harborlightsri.com/pool-drift-bar/" },
+        { label: "Marina", href: "https://harborlightsri.com/marina/" },
+    ];
+  }
+  _extraVals() {
+    const s = this.state;
+    const res = this._res;
+    return {
+      showIncentive: this.props.showIncentive ?? true,
+      isMobileNav: s.vw < 1200,
+      isDesktopNav: s.vw >= 1200,
+      mobileNavOpen: s.vw < 1200 && s.mobileNavOpen,
+      toggleMobileNav: () => this.setState({ mobileNavOpen: !s.mobileNavOpen }),
+      mobileNavLinks: this._navData().flatMap((item) =>
+        item.children
+          ? [{ label: item.label, href: item.href, indent: "28px" }].concat(
+              item.children.map((c) => ({ label: c.label, href: c.href, indent: "48px" })))
+          : [{ label: item.label, href: item.href, indent: "28px" }]),
+
+
+      galleryRef: (el) => { this.galEl = el; },
+      galleryPrev: () => { if (this.galEl) this.galEl.scrollBy({ left: -this.galEl.clientWidth, behavior: "smooth" }); },
+      galleryNext: () => { if (this.galEl) this.galEl.scrollBy({ left: this.galEl.clientWidth, behavior: "smooth" }); },
+
+      faqs: [
+        { q: "What bar service options do you offer?", a: "Every holiday party includes full bar service with an option that fits your group and budget: a hosted bar (you cover the tab — open bar billed on consumption or per person), a cash bar (guests purchase their own drinks), or drink tickets (host a set number of drinks per guest, cash bar after)." },
+        { q: "When should we book our holiday party?", a: "Prime December dates fill quickly — most groups book by early fall. Book by September 15 for the best date availability and early-booking perks. Flexible dates (weekdays or early December) open up even more options." },
+        { q: "Is there special pricing for holiday parties?", a: "Yes — our Sales Managers can tailor room rental rates and food & beverage minimums for holiday events. Contact us for a proposal built around your group and budget." },
+        { q: "What group sizes can you host?", a: "From intimate teams to large company-wide celebrations. Groups of 40 and under may also love our Jingle Mingle on December 11, 2026 — a shared holiday party without booking a private room." },
+        { q: "Can you accommodate dietary restrictions?", a: "Absolutely. Our culinary team regularly accommodates vegetarian, vegan, gluten-free, and allergy-conscious guests — just let your Sales Manager know." },
+        { q: "Do you cater offsite events?", a: "Yes — our Group Catering menus and Holiday Catering Packages are perfect for parties at your office or home, and everything is customizable to your needs." },
+      ].map((f, i) => ({
+        ...f,
+        open: s.openFaq === i,
+        icon: s.openFaq === i ? "−" : "+",
+        toggle: () => this.setState({ openFaq: s.openFaq === i ? -1 : i }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>
